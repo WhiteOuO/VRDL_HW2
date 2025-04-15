@@ -1,11 +1,26 @@
-# NYCU Computer Vision 2025 Spring HW1
+# NYCU VRDL HW2  
 StudentID:110550128  
 Name:蔡耀霆
 ## Introduction:
-I have chosen to use pretrained weights for image recognition, which will give me a good starting point, and then let the model gradually adapt to my dataset and learn. I plan to implement some data augmentation so that each image in my training set can be transformed through different image processing techniques to provide more comprehensive features for that class, such as horizontal flipping, slight changes in brightness and hue, and cropping the image.
-In addition to image processing techniques, I also plan to use methods to exclude outliers from the training data. I believe this will help the model better learn the common features of the class from the normal data.
-Furthermore, I will also apply a learning rate adjustment strategy, some model layer addition and some techniques to help my model progress more effectively.
-## How to install
-pip install -r requirements.txt  
+
+This project tackles an object detection and digit recognition task using a Faster R-CNN model with a ResNet50-FPN backbone. The goal is to accurately detect and recognize sequences of digits in complex images.
+
+To improve training efficiency and address memory constraints, the following techniques were implemented:
+
+- **Pre-saved `.pt` tensors** for faster data loading, avoiding real-time augmentation and reducing computational overhead.
+- **Proper data augmentation** proper data augmentations are applied to this digits recognitions tasks to improve model's robustness.
+- **Split training strategy**, where the full dataset is divided into multiple subsets, and only one subset is loaded into memory per epoch to alleviate RAM pressure.
+- **Learning rate decay with early stopping**, allowing efficient convergence and reducing the risk of overfitting.
+- **Post-processing of digit sequence prediction**, where predicted boxes are sorted left-to-right, and corresponding digit labels are concatenated to form the final prediction.
+
+The model outputs both bounding box predictions (`pred.json`) and digit sequence classifications (`pred.csv`), evaluated on the official test set.
+
+## How to Run
+### Basic training process & prediction
+1.Run the image_aug_to_pt.py and turn all images and corresponding annotations into a pt file.  
+2.Run the pt_spilt.py.  
+3.Run the main_train_cycle.py.  
+4.Run prediction.py.  
+Other files are for findings.  
 ## Performance snapshot
 ![image](https://github.com/user-attachments/assets/dbff9a04-fd66-4c45-948f-c04daeb32820)
