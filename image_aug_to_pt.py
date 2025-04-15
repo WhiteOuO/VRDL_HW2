@@ -37,11 +37,10 @@ def preprocess_and_save_pt(input_dir, output_dir, annotation_file=None, is_test=
                 ann_by_image[img_id] = []
             ann_by_image[img_id].append(ann)
     else:
-        # 測試集不含標註
         image_files = [f for f in os.listdir(input_dir) if f.endswith('.png')]
         images_info = {}
         for fname in sorted(image_files):
-            img_id = int(os.path.splitext(fname)[0])  # 直接從檔名取得數字
+            img_id = int(os.path.splitext(fname)[0])
             images_info[img_id] = {'id': img_id, 'file_name': fname}
 
         ann_by_image = {}
@@ -61,7 +60,6 @@ def preprocess_and_save_pt(input_dir, output_dir, annotation_file=None, is_test=
         img_tensor = torch.from_numpy(img_array).permute(2, 0, 1).float() / 255.0
 
         if is_test:
-            # ✅ test 只存 image tensor
             torch.save(img_tensor, os.path.join(output_dir, f"{img_id}.pt"))
         else:
             boxes = []
@@ -79,7 +77,6 @@ def preprocess_and_save_pt(input_dir, output_dir, annotation_file=None, is_test=
             }
             torch.save(pt_data, os.path.join(output_dir, f"{img_id}.pt"))
 
-# 執行轉換
-# train_ann = preprocess_and_save_pt("hw2/train", "hw2/train_tensors", "hw2/train.json")
-# val_ann = preprocess_and_save_pt("hw2/valid", "hw2/val_tensors", "hw2/valid.json")
+train_ann = preprocess_and_save_pt("hw2/train", "hw2/train_tensors", "hw2/train.json")
+val_ann = preprocess_and_save_pt("hw2/valid", "hw2/val_tensors", "hw2/valid.json")
 preprocess_and_save_pt("hw2/test", "hw2/test_tensors", is_test=True)
